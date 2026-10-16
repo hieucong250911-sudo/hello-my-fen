@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff0f5">
+<title>A Little Gift For You 🌸</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --pink: #ff9fbd;
+  --deep: #d96d98;
+  --light: #fff0f5;
+  --text: #a95078;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--text);
+  background: linear-gradient(
+    135deg, #fff7fa, #ffe4ee, #fceaf8, #fff1f5
+  );
+}
+
+button {
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#petals, #sparkles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.petal {
+  position: absolute;
+  top: -35px;
+  color: #f49bbb;
+  opacity: .8;
+  animation: fall linear infinite;
+  filter: drop-shadow(0 0 5px #fff);
+}
+
+@keyframes fall {
+  0% { transform: translate(0, -5vh) rotate(0deg); }
+  50% { transform: translate(45px, 50vh) rotate(180deg); }
+  100% { transform: translate(-30px, 110vh) rotate(360deg); }
+}
+
+.sparkle {
+  position: absolute;
+  color: white;
+  text-shadow: 0 0 8px #ee82ac, 0 0 16px #ffb6d0;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: .15; transform: scale(.6); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  padding: 28px 20px 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(18px) scale(.98);
+  transition: opacity .65s, transform .65s, visibility .65s;
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.page.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.glass {
+  width: min(100%, 420px);
+  padding: 30px 23px;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 28px;
+  background: rgba(255,255,255,.55);
+  box-shadow: 0 12px 40px rgba(218, 111, 153, .13);
+  backdrop-filter: blur(12px);
+}
+
+.tag {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #c47a99;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: clamp(29px, 8vw, 43px);
+  line-height: 1.25;
+  color: #d96d98;
+  text-shadow: 0 3px 15px #ffc4d8;
+  margin-bottom: 18px;
+}
+
+h2 {
+  font-size: 28px;
+  margin-bottom: 17px;
+  color: #d96d98;
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.flower {
+  font-size: 58px;
+  margin-bottom: 17px;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-12px) rotate(5deg); }
+}
+
+.btn {
+  margin-top: 25px;
+  padding: 13px 25px;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 30px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  background: linear-gradient(120deg, #f5a5c1, #e785aa);
+  box-shadow: 0 6px 20px #e9a3bf66;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.btn:active {
+  transform: scale(.95);
+}
+
+.btn:hover {
+  box-shadow: 0 8px 26px #e58db466;
+}
+
+.hint {
+  margin-top: 14px;
+  font-size: 11px;
+  color: #c18aa1;
+  letter-spacing: 1px;
+}
+
+.divider {
+  width: 70px;
+  height: 2px;
+  margin: 18px auto;
+  background: linear-gradient(90deg, transparent, #efa1bd, transparent);
+}
+
+.wish {
+  text-align: left;
+  padding: 17px;
+  margin-top: 12px;
+  border-radius: 16px;
+  background: #fff6fa;
+  border: 1px solid #ffe2ec;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.wish span {
+  margin-right: 8px;
+}
+
+.counter {
+  margin-top: 20px;
+  color: #c17b98;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+/* PHONG THƯ */
+
+.envelope-area {
+  perspective: 900px;
+  margin: 30px auto 10px;
+  width: 210px;
+  height: 150px;
+  cursor: pointer;
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f6b4ca;
+  border-radius: 5px;
+  box-shadow: 0 10px 30px #d98eaa55;
+}
+
+.env-back {
+  position: absolute;
+  inset: 0;
+  background: #f3a7c0;
+}
+
+.letter {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 8px;
+  height: 120px;
+  background: #fffafc;
+  border-radius: 5px;
+  padding: 15px 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  transition: transform .8s ease, height .8s ease;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.env-front {
+  position: absolute;
+  inset: 0;
+  background: #ffd0df;
+  clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+  z-index: 3;
+}
+
+.env-flap {
+  position: absolute;
+  inset: 0;
+  background: #f4a6c0;
+  clip-path: polygon(0 0, 100% 0, 50% 62%);
+  transform-origin: top;
+  transition: transform .65s ease;
+  z-index: 4;
+}
+
+.heart-seal {
+  position: absolute;
+  top: 54px;
+  left: calc(50% - 16px);
+  z-index: 5;
+  font-size: 29px;
+  transition: opacity .3s;
+}
+
+.envelope.open .env-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope.open .heart-seal {
+  opacity: 0;
+}
+
+.envelope.open .letter {
+  height: 220px;
+  transform: translateY(-80px);
+  overflow: auto;
+  z-index: 6;
+}
+
+.letter-content {
+  opacity: 0;
+  transition: opacity .4s .3s;
+}
+
+.envelope.open .letter-content {
+  opacity: 1;
+}
+
+.letter-content p {
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.secret {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #bc7894;
+}
+
+.final-heart {
+  font-size: 65px;
+  filter: drop-shadow(0 0 15px #f7a5c4);
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.1); }
+}
+
+.signature {
+  margin-top: 25px;
+  font-size: 13px;
+  font-style: italic;
+  color: #c17b98;
+}
+
+.nav {
+  position: fixed;
+  bottom: 23px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  z-index: 10;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #edbfd0;
+  transition: all .3s;
+  cursor: pointer;
+}
+
+.dot.active {
+  width: 25px;
+  border-radius: 8px;
+  background: #df83a7;
+}
+
+.nav-btn {
+  border: none;
+  background: #ffffffb8;
+  color: #bf7694;
+  border-radius: 20px;
+  padding: 8px 13px;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 3px 12px #df9db322;
+}
+
+.nav-btn:disabled {
+  opacity: .3;
+}
+
+@media (max-height: 650px) {
+  .page { padding-top: 15px; padding-bottom: 75px; }
+  .glass { padding: 20px 18px; }
+  .flower { font-size: 40px; margin-bottom: 8px; }
+  h1 { font-size: 30px; }
+  .btn { margin-top: 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="petals"></div>
+<div id="sparkles"></div>
+
+<!-- TRANG 1: LỜI CHÀO -->
+<section class="page active" id="page1">
+  <div class="glass">
+    <div class="tag">A tiny gift for you</div>
+    <div class="flower">🌸</div>
+    <h1>Hey, Châu!</h1>
+    <div class="divider"></div>
+    <p>
+      Có một món quà nho nhỏ<br>
+      dành riêng cho một người đặc biệt.<br>
+      Hôm nay người đó là cậu.
+    </p>
+    <button class="btn" onclick="goTo(2)">
+      Mở món quà ♡
+    </button>
+    <div class="hint">✧ MADE WITH A LITTLE CARE ✧</div>
+  </div>
+  <div class="counter">01 / 04</div>
+</section>
+
+<!-- TRANG 2: LỜI CHÚC -->
+<section class="page" id="page2">
+  <div class="glass">
+    <div class="tag">A little wish for you</div>
+    <div class="flower">💗</div>
+    <h2>Gửi cậu, Châu</h2>
+    <p>
+      Chúc cậu một ngày 20/10 thật vui vẻ nhé!
+      Mong cậu luôn giữ được nụ cười của mình,
+      gặp thật nhiều điều dễ thương và có thật
+      nhiều người đối xử tốt với cậu.
+    </p>
+
+    <div class="wish">
+      <span>🌷</span> Mong những ngày mệt mỏi sẽ nhẹ nhàng hơn.
+    </div>
+    <div class="wish">
+      <span>🦋</span> Mong mọi điều cậu cố gắng đều có kết quả tốt.
+    </div>
+    <div class="wish">
+      <span>✨</span> Và mong cậu luôn có lý do để mỉm cười.
+    </div>
+
+    <button class="btn" onclick="goTo(3)">
+      Còn một điều nữa... ♡
+    </button>
+  </div>
+  <div class="counter">02 / 04</div>
+</section>
+
+<!-- TRANG 3: PHONG THƯ BÍ MẬT -->
+<section class="page" id="page3">
+  <div class="glass">
+    <div class="tag">A little secret</div>
+    <div class="flower">💌</div>
+    <h2>Một chiếc thư nhỏ</h2>
+    <p>
+      Có một điều tớ muốn gửi đến cậu,
+      nhưng để trong phong thư thì có vẻ
+      thú vị hơn một chút nhỉ?
+    </p>
+
+    <div class="envelope-area" onclick="openLetter()">
+      <div class="envelope" id="envelope">
+        <div class="env-back"></div>
+
+        <div class="letter">
+          <div class="letter-content">
+            <p>
+              Gửi Châu 🌷<br><br>
+              Cảm ơn cậu vì đã xuất hiện trong
+              những ngày đi học bình thường của tớ.
+              Dù chỉ là vài câu chuyện nhỏ hay
+              những lần nói chuyện linh tinh,
+              tớ vẫn thấy đó là những kỷ niệm đáng nhớ.<br><br>
+              Mong rằng sau này, khi nhớ lại,
+              chúng mình vẫn có thể mỉm cười
+              vì đã từng có những ngày vui như thế. ♡
+            </p>
+          </div>
+        </div>
+
+        <div class="env-flap"></div>
+        <div class="env-front"></div>
+        <div class="heart-seal">💗</div>
+      </div>
+    </div>
+
+    <div class="secret" id="secretHint">
+      Chạm vào phong thư để mở nhé ✨
+    </div>
+
+    <button class="btn" onclick="goTo(4)">
+      Đi đến trang cuối 🌸
+    </button>
+  </div>
+  <div class="counter">03 / 04</div>
+</section>
+
+<!-- TRANG 4: KẾT -->
+<section class="page" id="page4">
+  <div class="glass">
+    <div class="tag">Until the next little moment</div>
+    <div class="final-heart">💗</div>
+    <h1>That's all!</h1>
+    <div class="divider"></div>
+    <p>
+      Món quà nhỏ đến đây là hết rồi.<br>
+      Chúc cậu có một ngày 20/10 thật xinh đẹp,
+      vui vẻ và đáng nhớ nhé.
+    </p>
+
+    <div class="flower" style="margin-top:22px">
+      🌸 🌷 🌸
+    </div>
+
+    <p>
+      Cứ là Châu theo cách của cậu thôi.<br>
+      Thế là đủ đặc biệt rồi.
+    </p>
+
+    <div class="signature">
+      — Một người bạn gửi cậu ♡
+    </div>
+
+    <button class="btn" onclick="restart()">
+      Xem lại từ đầu ↻
+    </button>
+  </div>
+  <div class="counter">04 / 04</div>
+</section>
+
+<div class="nav">
+  <button class="nav-btn" id="prev" onclick="goTo(current - 1)">
+    ← Trước
+  </button>
+  <div class="dot active" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+  <div class="dot" onclick="goTo(4)"></div>
+  <button class="nav-btn" id="next" onclick="goTo(current + 1)">
+    Tiếp →
+  </button>
+</div>
+
+<script>
+let current = 1;
+let letterOpened = false;
+
+function goTo(n) {
+  if (n < 1 || n > 4) return;
+
+  current = n;
+
+  document.querySelectorAll('.page').forEach((page, i) => {
+    page.classList.toggle('active', i === n - 1);
+  });
+
+  document.querySelectorAll('.dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === n - 1);
+  });
+
+  document.getElementById('prev').disabled = n === 1;
+  document.getElementById('next').disabled = n === 4;
+}
+
+function restart() {
+  letterOpened = false;
+  document.getElementById('envelope').classList.remove('open');
+  document.getElementById('secretHint').textContent =
+    'Chạm vào phong thư để mở nhé ✨';
+  goTo(1);
+}
+
+function openLetter() {
+  if (letterOpened) return;
+
+  letterOpened = true;
+  document.getElementById('envelope').classList.add('open');
+  document.getElementById('secretHint').textContent =
+    'Một lời nhắn nhỏ dành riêng cho cậu ♡';
+}
+
+// Hoa anh đào rơi
+const petals = document.getElementById('petals');
+const petalSymbols = ['🌸', '✿', '❀', '🌷'];
+
+for (let i = 0; i < 24; i++) {
+  const p = document.createElement('span');
+  p.className = 'petal';
+  p.textContent = petalSymbols[
+    Math.floor(Math.random() * petalSymbols.length)
+  ];
+  p.style.left = Math.random() * 100 + '%';
+  p.style.fontSize = (10 + Math.random() * 12) + 'px';
+  p.style.animationDuration = (8 + Math.random() * 12) + 's';
+  p.style.animationDelay = (-Math.random() * 18) + 's';
+  petals.appendChild(p);
+}
+
+// Những đốm sáng lấp lánh
+const sparkles = document.getElementById('sparkles');
+
+for (let i = 0; i < 32; i++) {
+  const s = document.createElement('span');
+  s.className = 'sparkle';
+  s.textContent = Math.random() > 0.5 ? '✦' : '✧';
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 100 + '%';
+  s.style.fontSize = (8 + Math.random() * 13) + 'px';
+  s.style.animationDelay = Math.random() * 3 + 's';
+  s.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+  sparkles.appendChild(s);
+}
+
+// Vuốt ngang để chuyển trang trên điện thoại
+let touchStartX = 0;
+
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+
+  if (Math.abs(dx) > 90) {
+    if (dx < 0) goTo(current + 1);
+    else goTo(current - 1);
+  }
+}, { passive: true });
+
+goTo(1);
+</script>
+
+</body>
+</html>
